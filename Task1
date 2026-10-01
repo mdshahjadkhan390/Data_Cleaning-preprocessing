@@ -1,0 +1,83 @@
+import pandas as pd
+
+# 1. Import dataset
+df = pd.read_csv("task1_dataset.csv")
+
+# Remove extra spaces from column names
+df.columns = df.columns.str.strip()
+
+# 2. Inspect dataset
+print("ORIGINAL DATA")
+print(df)
+
+print("\nDATASET INFORMATION")
+print(df.info())
+
+print("\nDATASET SHAPE")
+print(df.shape)
+
+# 3. Check missing values
+print("\nMISSING VALUES")
+print(df.isnull().sum())
+
+# 4. Check duplicate records
+print("\nDUPLICATE RECORDS")
+print(df.duplicated().sum())
+
+# 5. Check unique values
+print("\nCITY VALUES BEFORE CLEANING")
+print(df["City"].unique())
+
+print("\nGENDER VALUES BEFORE CLEANING")
+print(df["Gender"].unique())
+
+# 6. Handle missing values
+
+# Age: replace missing values with median
+df["Age"] = df["Age"].fillna(df["Age"].median())
+
+# City: replace missing values with mode
+df["City"] = df["City"].fillna(df["City"].mode()[0])
+
+# Gender: replace missing values with mode
+df["Gender"] = df["Gender"].fillna(df["Gender"].mode()[0])
+
+# Salary: replace missing values with median
+df["Salary"] = df["Salary"].fillna(df["Salary"].median())
+
+# 7. Correct inconsistent city names
+df["City"] = df["City"].str.strip().str.title()
+
+# Correct gender formatting
+df["Gender"] = df["Gender"].str.strip().str.title()
+
+# 8. Remove duplicate records
+df = df.drop_duplicates()
+
+# 9. Correct data types
+df["Age"] = df["Age"].astype(int)
+df["Salary"] = df["Salary"].astype(float)
+
+# Convert Join_Date to date format
+df["Join_Date"] = pd.to_datetime(df["Join_Date"])
+
+# 10. Check cleaned data
+print("\nCLEANED DATA")
+print(df)
+
+# 11. Check missing values after cleaning
+print("\nMISSING VALUES AFTER CLEANING")
+print(df.isnull().sum())
+
+# 12. Check duplicates after cleaning
+print("\nDUPLICATES AFTER CLEANING")
+print(df.duplicated().sum())
+
+# 13. Check city values after cleaning
+print("\nCITY VALUES AFTER CLEANING")
+print(df["City"].unique())
+
+# 14. Save cleaned dataset
+df.to_csv("cleaned_task1_dataset.csv", index=False)
+
+print("\nCleaned dataset saved successfully!")
